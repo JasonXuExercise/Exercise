@@ -6,7 +6,7 @@ This is a lightweight code editor including some awesome editor features!
 Q & A
 
 1.How to RUN:
-You can download all the documents and click on the html file to RUN it.
+You can download all the documents and click on the index.html file to RUN it.
 
 2.Input suggestions:
 The user types in the first(left) pane, considering that it is a textarea, please input keep in one line and do not use the ENTER key.
