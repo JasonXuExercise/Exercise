@@ -1,5 +1,5 @@
-# Exercise
-A lightweight code editor
+# Exercise_A lightweight code editor
+
 Welcome!
 This is a lightweight code editor including some awesome editor features!
 
