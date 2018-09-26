@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../static/css/reset.css">
+    <link rel="stylesheet" href="../static/css/index.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div class="left">
+            <textarea v-model="code" ref="textarea" class="textarea" cols="30" rows="10" placeholder="Please input your Awesome Code^_^ Note: Keep in one line, do not use Enter Key"></textarea>
+            <ul class="pre-wrapper">
+                <li v-for="preWordItem in preWordList" class="pre-Item" @click="handlePre(preWordItem.name)">{{ preWordItem.name }}</li>
+            </ul>
+        </div>
+        <div class="right" v-html="solveCode"></div>
+    </div>
+    <script src="../static/js/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: function(){
+                return {
+                    code: '', // core code here
+                    keyWord: ['var', 'function', 'class'], // key words
+                    preWordList: [], 
+                    mapObj: { // Object to be mapped
+                        obj: {
+                            foo1:'some value',
+                            foo2:{
+                                foo3:'some value'
+                            }
+                        }
+                    }
+                }
+            },
+            computed: {
+                solveCode: function() {
+                    // If the code is empty, do not execute
+                    if (this.code == '') return
+
+                    // If the code changes every time, set the preselected array to null.
+                    this.preWordList = []
+
+                    // Cut the code with spaces and get an array
+                    var tempCodeList = this.code.split(' ')
+                    // Get the length of the array
+                    var tempCodeLen = tempCodeList.length
+                    // Get the last element of the current array
+                    var tempLastEl = tempCodeList[tempCodeLen - 1]
+
+                    // Judging keywords: If there are keywords, put them in the pre-selected array
+                    if ('var'.indexOf(tempLastEl) > -1 && tempLastEl !== '') {
+                        this.preWordList.push({
+                            name: 'var',
+                            value: 'var'
+                        })
+                    }
+                    if ('function'.indexOf(tempLastEl) > -1 && tempLastEl !== '') {
+                        this.preWordList.push({
+                            name: 'function',
+                            value: 'function'
+                        })
+                    }
+                    if ('class'.indexOf(tempLastEl) > -1 && tempLastEl !== '') {
+                        this.preWordList.push({
+                            name:'class',
+                            value: 'class'
+                        })
+                    }
+
+                    // Get the last array and then cut with dot notation
+                    var temp2 = tempLastEl.split('.')
+                    // If the length of the array after cutting is one
+                    if (temp2.length === 1) {
+                        if (temp2[0] === 'obj') { 
+                            // Get the attribute value behind obj
+                            this.preWordList.push({
+                                name: 'obj.foo1',
+                                value: JSON.stringify(this.mapObj['obj']['foo1'])
+                            })
+                            this.preWordList.push({
+                                name: 'obj.foo2',
+                                value: JSON.stringify(this.mapObj['obj']['foo2'])
+                            })
+                        } else if ('obj'.indexOf(temp2[0]) > -1 && temp2[0] !== '') {   //  equals o、 ob
+                            this.preWordList.push({
+                                name: 'obj',
+                                value: JSON.stringify(this.mapObj['obj'])
+                            })
+                        } else if (temp2[0] === 'Slyce') {
+                            this.preWordList = []
+                        }
+                    } else if (temp2.length === 2){ 
+                    // If the length of the array after cutting is two
+                        if (temp2[1] === 'foo2') {
+                            this.preWordList.push({
+                                name: 'obj.foo2.foo3',
+                                value: JSON.stringify(this.mapObj['obj']['foo2']['foo3'])
+                            })
+                        }
+                    }
+                    
+                    return this.code
+                    // Replace keywords and highlight the keywords
+                    .replace(/(var|function|class)/g, '<span>$1</span>')
+                    // Highlighting characters in single quotes
+                    .replace(/\'([^\'\<\>]*)\'/g, '<strong>\'$1\'</strong>')
+                    .replace(/\"([^\"\>\<]*)\"/g, '<strong>\"$1\"</strong>')
+                }
+            },
+            created: function(){
+                
+            },
+            methods: {
+                // Click on the pre-selected list to replace characters
+                handlePre: function(item) {
+                    // Cut existing code with spaces
+                    var tempCodeList = this.code.split(' ')
+                    var tempCodeLen = tempCodeList.length
+                    // Replace the last element of the current array
+                    tempCodeList[tempCodeLen - 1] = item + ' '
+                    // Use the join method to merge with spaces
+                    this.code = tempCodeList.join(' ')
+                    
+                    this.$refs.textarea.focus()
+                }
+            }
+        })
+    </script>
+</body>
+</html>

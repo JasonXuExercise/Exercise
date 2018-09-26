@@ -1,0 +1,52 @@
+#app {
+    position: relative;
+}
+.left {
+    position: fixed;
+    width: 50%;
+    left: 10px;
+    top: 10px;
+    bottom: 0;
+    padding: 15px;
+    background: skyblue;
+    border-radius: 8px;
+}
+textarea {
+    width: 85%;
+    height: 80%;
+    padding: 5px;
+    background: skyblue;
+}
+.right {
+    position: fixed;
+    width: 50%;
+    right: 38px;
+    top: 69px;
+    bottom: 0;
+    padding: 15px;
+    background: orange;
+    border-radius: 8px;
+}
+.right span {
+    color: red;
+}
+.right strong {
+    color: blue;
+}
+.pre-wrapper {
+    /* width: 231px; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.pre-Item {
+    height: 30px;
+    padding-left: 10px;
+    border-bottom: 1px solid gray;
+    line-height: 30px;
+    cursor: pointer;
+}
+.pre-Item:hover {
+    color: #fff;
+    background: #0d70ff;
+}
